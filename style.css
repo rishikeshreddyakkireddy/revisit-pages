@@ -1,0 +1,21 @@
+body{
+    background-color : rgb(151, 224, 157);
+    color: white;
+}
+
+#nav-brand {
+    margin-left: 150%;
+}
+
+#open {
+    color: black;
+}
+
+.card {
+    margin: auto;
+    margin-top: 10px;
+}
+
+.row {
+    margin : 10px;
+}
