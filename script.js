@@ -1,17 +1,16 @@
-let pages = [];
-
+loadPages();
 function show(){
     var input = document.getElementById("input");
     var open = document.getElementById("open");
     var tag = document.getElementById("tag");
     var description = document.getElementById("description");
     open.innerHTML = "";
-    var object = {tag: tag.value,input : input.value,description : description.value}
-    pages.unshift(object);
-    loadPages();
+    var object = {tags: tag.value,input : input.value,description : description.value};
+    localStorage.setItem(input.value, JSON.stringify(object));
     input.value = "";
     tag.value = "";
     description.value = "";
+    loadPages();
 }
 
 
@@ -19,13 +18,17 @@ function show(){
 function loadPages(){
   var open = document.getElementById("open");
   open.innerHTML = "";
-  for(let i=0;i<pages.length;i++){
+  for (const key in localStorage) {
+    let k;
+    if (localStorage.hasOwnProperty(key)) {
+      k = JSON.parse( localStorage.getItem( key ) );
+    }
     open.innerHTML += ` <div class="col-sm-6">
       <div class="card">
         <div class="card-body">
-          <h5 class="card-title">${pages[i].tag}</h5>
-          <p class="card-text">${pages[i].description}</p>
-          <a href="${pages[i].input}" class="btn btn-primary" target="_blank">Go to website</a>
+          <h5 class="card-title">${k.tags}</h5>
+          <p class="card-text">${k.description}</p>
+          <a href="${k.input}" class="btn btn-primary" target="_blank">Go to website</a>
           <a  class="btn btn-danger" id="delete" onclick="deletePage(event)" ">Delete</a>
         </div>
       </div>
@@ -43,10 +46,14 @@ function deletePage(e){
   var p = children[3];
   var a = children[7];
   //find the page and delete
-  for(let i=0;i<pages.length;i++){
-      if(h1.innerText === pages[i].tag){
-        if(p.innerText === pages[i].description){
-            pages.splice(i);
+  for (const key in localStorage) {
+      if (localStorage.hasOwnProperty(key)) {
+        let k = JSON.parse( localStorage.getItem( key ) );
+        var tag = k.tags;
+        if(h1.innerText === tag){
+          if(p.innerText === k.description){
+            localStorage.removeItem(key);
+          }
         }
       }
   }
